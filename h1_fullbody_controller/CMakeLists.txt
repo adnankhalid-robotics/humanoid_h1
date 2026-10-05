@@ -51,10 +51,24 @@ install(DIRECTORY
   policy
   DESTINATION share/${PROJECT_NAME})
 
+#install(DIRECTORY h1_description
+ #       DESTINATION share/${PROJECT_NAME})
+
+
+
 # Install Python executables
 install(PROGRAMS
-  scripts/h1_fullbody_controller.py
+  scripts/h1_fullbody_controller.py #scripts/camera.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+# --- make the bundled h1_description resolvable as package://h1_description ---
+install(DIRECTORY h1_description/urdf h1_description/meshes
+        DESTINATION share/h1_description)
+
+install(CODE "
+  file(MAKE_DIRECTORY \"\${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/packages\")
+  file(WRITE \"\${CMAKE_INSTALL_PREFIX}/share/ament_index/resource_index/packages/h1_description\" \"\")
+")
 
 ament_package()
